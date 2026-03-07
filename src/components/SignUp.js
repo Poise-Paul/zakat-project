@@ -68,6 +68,7 @@ const SignUp = () => {
       setLoading(false);
       console.log("Sign Up Result", result);
       dispatch(updateUser(result.data));
+      localStorage.setItem("authToken", result.data.token.accessToken);
       toast.success(result.message);
       navigate("/verifyOtp");
     } else {

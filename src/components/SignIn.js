@@ -38,6 +38,7 @@ const SignIn = () => {
         setMessage("✅ Login successful!");
         // store token if needed
         dispatch(updateUser(result.data));
+        localStorage.setItem("authToken", result.data.token.accessToken);
         setTimeout(() => navigate("/quickCalc"), 1000);
       } else {
         toast.error(result.message);

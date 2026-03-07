@@ -47,7 +47,7 @@ const VerifyOTP = () => {
       const result = await response.json();
       if (result.status === "success") {
         setMessage("✅ Email verified successfully!");
-        setTimeout(() => navigate("/quickCalc"), 1500); // redirect to login
+        setTimeout(() => navigate("/signIn"), 1500); // redirect to login
       } else {
         setMessage("❌ Verification failed: " + result.message);
       }

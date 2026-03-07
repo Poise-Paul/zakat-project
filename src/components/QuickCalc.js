@@ -1,13 +1,16 @@
 import React, { useState } from "react";
 import whitelogo from "../assets/White-Al Fattah.png";
-import { Link } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { Link, useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 import { FaUser } from "react-icons/fa6";
-
+import { updateUser } from "../redux/slices/registerSlice";
+import LogoutModal from "./LogoutModal";
 
 const QuickCalc = () => {
   const [assets, setAssets] = useState(Array(9).fill(0));
   const [liabilities, setLiabilities] = useState(Array(3).fill(0));
+
+  const [showLogout, setShowLogout] = useState(false);
 
   const handleAssetChange = (index, value) => {
     const newAssets = [...assets];
@@ -30,7 +33,19 @@ const QuickCalc = () => {
   const zakat = zakatable >= nisab ? zakatable * 0.025 : 0;
 
   // Get User Name & Image
-  const user = useSelector((state) => state.register.user)
+  const user = useSelector((state) => state.register.user);
+
+  // Logout User
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    // Clear auth token or user data
+    localStorage.removeItem("authToken");
+    dispatch(updateUser(null));
+    // Redirect to login
+    navigate("/");
+  };
   return (
     <div>
       {/* Header */}
@@ -44,7 +59,7 @@ const QuickCalc = () => {
         </div>
         <div className="flex gap-3 items-center capitalize">
           <h1 className="text-2xl font-bold text-white">
-            Welcome back {user.user.firstName}
+            Welcome back {user?.user?.firstName}
           </h1>
           <div className="w-10 h-10 rounded-full">
             <img
@@ -55,31 +70,35 @@ const QuickCalc = () => {
           </div>
         </div>
         <div className="flex items-center gap-4 justify-end p-5">
-          <Link to="/profile">
-            <div className="flex items-center gap-2">
-              <FaUser color="white" />
-              <span className="text-white font-semibold">Profile</span>
-            </div>
-          </Link>
-          <Link to="/">
-            <div className="flex items-center gap-2">
-              <div className="bg-white h-10 w-10 p-2 rounded-full flex items-center justify-center">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-5 w-5 text-green-700"
-                  viewBox="0 0 20 20"
-                  fill="currentColor"
-                >
-                  <path
-                    fillRule="evenodd"
-                    d="M3 3a1 1 0 00-1 1v12a1 1 0 102 0V4a1 1 0 00-1-1zm10.293 9.293a1 1 0 001.414 1.414l3-3a1 1 0 000-1.414l-3-3a1 1 0 10-1.414 1.414L14.586 9H7a1 1 0 100 2h7.586l-1.293 1.293z"
-                    clipRule="evenodd"
-                  />
-                </svg>
+          {user?.user?.id && (
+            <Link to="/profile">
+              <div className="flex items-center gap-2">
+                <FaUser color="white" />
+                <span className="text-white font-semibold">Profile</span>
               </div>
-              <span className="text-white font-semibold">Logout</span>
+            </Link>
+          )}
+
+          <div
+            onClick={() => setShowLogout(true)}
+            className="flex cursor-pointer items-center gap-2"
+          >
+            <div className="bg-white h-10 w-10 p-2 rounded-full flex items-center justify-center">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-5 w-5 text-green-700"
+                viewBox="0 0 20 20"
+                fill="currentColor"
+              >
+                <path
+                  fillRule="evenodd"
+                  d="M3 3a1 1 0 00-1 1v12a1 1 0 102 0V4a1 1 0 00-1-1zm10.293 9.293a1 1 0 001.414 1.414l3-3a1 1 0 000-1.414l-3-3a1 1 0 10-1.414 1.414L14.586 9H7a1 1 0 100 2h7.586l-1.293 1.293z"
+                  clipRule="evenodd"
+                />
+              </svg>
             </div>
-          </Link>
+            <span className="text-white font-semibold">Logout</span>
+          </div>
         </div>
       </div>
 
@@ -184,6 +203,13 @@ const QuickCalc = () => {
           </div>
         </div>
       </div>
+
+      {/* Logout modal */}
+      <LogoutModal
+        isOpen={showLogout}
+        onClose={() => setShowLogout(false)}
+        onConfirm={handleLogout}
+      />
     </div>
   );
 };
