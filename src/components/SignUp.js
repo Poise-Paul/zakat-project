@@ -1,7 +1,101 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import logo from "../assets/zakat-logo.png";
+import toast, { Toaster } from "react-hot-toast";
+import { Link, useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { updateUser } from "../redux/slices/registerSlice";
 
 const SignUp = () => {
+  const [countries, setCountries] = useState([]);
+  const [states, setStates] = useState([]);
+  const [cities, setCities] = useState([]);
+  const [holdBtn, setHoldBtn] = useState(true);
+  const [loading, setLoading] = useState(false);
+  const [formData, setFormData] = useState({
+    firstName: "",
+    lastName: "",
+    email: "",
+    baseCurrency: "",
+    password: "",
+    address: "",
+    zipCode: "",
+    state: "",
+    city: "",
+    country: "",
+  });
+
+  // Fetch Data
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    fetch(
+      "http://automatadev-001-site15.atempurl.com/api/v1/locations/countries",
+    )
+      .then((res) => res.json())
+      .then((data) => setCountries(data.data.countries));
+  }, []);
+
+  const handleCountryChange = (countryName) => {
+    setFormData({ ...formData, country: countryName });
+    fetch(
+      `http://automatadev-001-site15.atempurl.com/api/v1/locations/countries/by-name/${countryName}/states`,
+    )
+      .then((res) => res.json())
+      .then((data) => setStates(data.data.states));
+  };
+
+  const handleStateChange = (stateId, stateName) => {
+    setFormData({ ...formData, state: stateName });
+    fetch(
+      `http://automatadev-001-site15.atempurl.com/api/v1/locations/states/${stateId}/cities`,
+    )
+      .then((res) => res.json())
+      .then((data) => setCities(data.data.cities));
+  };
+  const handleSubmit = async () => {
+    setLoading(true);
+    const response = await fetch(
+      "http://automatadev-001-site15.atempurl.com/api/v1/authentication/register",
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      },
+    );
+    const result = await response.json();
+    if (result.status === "success") {
+      setLoading(false);
+      console.log("Sign Up Result", result);
+      dispatch(updateUser(result.data));
+      toast.success(result.message);
+      navigate("/verifyOtp");
+    } else {
+      setLoading(false);
+      toast.error(result.message);
+    }
+  };
+
+  const requiredFields = [
+    "address",
+    "firstName",
+    "lastName",
+    "password",
+    "state",
+    "zipCode",
+    "country",
+    "email",
+    "city",
+    "baseCurrency",
+  ];
+
+  useEffect(() => {
+    const allFilled = requiredFields.every(
+      (key) => formData[key] && formData[key].trim() !== "",
+    );
+    setHoldBtn(!allFilled);
+  }, [formData]);
+
   return (
     <div className="App bg-green-300/50 h-screen flex justify-center items-center">
       <div className="bg-white flex flex-col gap-7 p-5 w-[50rem] h-[40rem] rounded-2xl">
@@ -21,6 +115,10 @@ const SignUp = () => {
               <input
                 type="text"
                 className="w-full focus:outline-none"
+                value={formData.firstName}
+                onChange={(e) =>
+                  setFormData({ ...formData, firstName: e.target.value })
+                }
                 placeholder="First Name"
               />
               <svg
@@ -40,6 +138,10 @@ const SignUp = () => {
               <input
                 type="text"
                 className="w-full focus:outline-none"
+                value={formData.lastName}
+                onChange={(e) =>
+                  setFormData({ ...formData, lastName: e.target.value })
+                }
                 placeholder="Last Name"
               />
               <svg
@@ -59,6 +161,10 @@ const SignUp = () => {
               <input
                 type="text"
                 className="w-full focus:outline-none"
+                value={formData.email}
+                onChange={(e) =>
+                  setFormData({ ...formData, email: e.target.value })
+                }
                 placeholder="Email Address"
               />
               <svg
@@ -78,7 +184,11 @@ const SignUp = () => {
               <input
                 type="text"
                 className="w-full focus:outline-none"
-                placeholder="Base Currency"
+                placeholder="Base Currency (NGN)"
+                value={formData.baseCurrency}
+                onChange={(e) =>
+                  setFormData({ ...formData, baseCurrency: e.target.value })
+                }
               />
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -99,6 +209,10 @@ const SignUp = () => {
                 type="text"
                 className="w-full focus:outline-none"
                 placeholder="Enter Password"
+                value={formData.password}
+                onChange={(e) =>
+                  setFormData({ ...formData, password: e.target.value })
+                }
               />
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -115,12 +229,15 @@ const SignUp = () => {
             </div>
           </div>
           <div className="flex flex-col gap-3">
-            {" "}
             <div className="border-2 border-gray-200 flex gap-1 p-3 rounded-xl">
               <input
                 type="text"
                 className="w-full focus:outline-none"
                 placeholder="Address"
+                value={formData.address}
+                onChange={(e) =>
+                  setFormData({ ...formData, address: e.target.value })
+                }
               />
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -140,6 +257,10 @@ const SignUp = () => {
                 type="text"
                 className="w-full focus:outline-none"
                 placeholder="Zip Code"
+                value={formData.zipCode}
+                onChange={(e) =>
+                  setFormData({ ...formData, zipCode: e.target.value })
+                }
               />
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -156,105 +277,111 @@ const SignUp = () => {
               </svg>
             </div>
             <div className="border-2 border-gray-200 flex gap-1 p-3 rounded-xl">
-              <input
-                type="text"
+              <select
                 className="w-full focus:outline-none"
-                placeholder="State"
-              />
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                class="h-6 w-6 text-gray-300"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-                stroke-width="2"
+                value={formData.country}
+                onChange={(e) => handleCountryChange(e.target.value)}
               >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  d="M3 21v-4m0 0V5a2 2 0 012-2h6.5l1 1H21l-3 6 3 6h-8.5l-1-1H5a2 2 0 00-2 2zm9-13.5V9"
-                />
-              </svg>
+                <option value="">Select Country</option>
+                {countries.map((c) => (
+                  <option key={c.id} value={c.name}>
+                    {c.name}
+                  </option>
+                ))}
+              </select>
+            </div>
+            {/* State */}
+            <div className="border-2 border-gray-200 flex gap-1 p-3 rounded-xl">
+              <select
+                className="w-full focus:outline-none"
+                value={formData.state}
+                onChange={(e) => {
+                  const selected = states.find(
+                    (s) => s.name === e.target.value,
+                  );
+                  handleStateChange(selected.id, selected.name);
+                }}
+              >
+                <option value="">Select State</option>
+                {states.map((s) => (
+                  <option key={s.id} value={s.name}>
+                    {s.name}
+                  </option>
+                ))}
+              </select>
             </div>
             <div className="border-2 border-gray-200 flex gap-1 p-3 rounded-xl">
-              <input
-                type="text"
+              <select
                 className="w-full focus:outline-none"
-                placeholder="City"
-              />
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                class="h-5 w-5 text-gray-300"
-                viewBox="0 0 20 20"
-                fill="currentColor"
+                value={formData.city}
+                onChange={(e) =>
+                  setFormData({ ...formData, city: e.target.value })
+                }
               >
-                <path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z" />
-              </svg>
-            </div>
-            <div className="border-2 border-gray-200 flex gap-1 p-3 rounded-xl">
-              <input
-                type="text"
-                className="w-full focus:outline-none"
-                placeholder="Country"
-              />
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                class="h-5 w-5 text-gray-300"
-                viewBox="0 0 20 20"
-                fill="currentColor"
-              >
-                <path
-                  fill-rule="evenodd"
-                  d="M3 6a3 3 0 013-3h10a1 1 0 01.8 1.6L14.25 8l2.55 3.4A1 1 0 0116 13H6a1 1 0 00-1 1v3a1 1 0 11-2 0V6z"
-                  clip-rule="evenodd"
-                />
-              </svg>
+                <option value="">Select City</option>
+                {cities.map((c) => (
+                  <option key={c.id} value={c.name}>
+                    {c.name}
+                  </option>
+                ))}
+              </select>
             </div>
           </div>
         </div>
         {/* Agree Holder */}
-        <div className="flex space-between">
-          <div className="flex gap-2 items-center">
-            <input
-              type="checkbox"
-              className="focus:outline-none bg-green-500"
-            />{" "}
-            <small className="capitalize">
-              i have asset's in different currencies
-            </small>
+        <div className="flex justify-between">
+          <div>
+            <div className="flex gap-2 items-center">
+              <input
+                type="checkbox"
+                className="focus:outline-none bg-green-500"
+              />{" "}
+              <small className="capitalize">
+                i have asset's in different currencies
+              </small>
+            </div>
+            <div className="flex gap-2 items-center">
+              <input
+                type="checkbox"
+                className="focus:outline-none bg-green-500"
+              />{" "}
+              <small className="capitalize">
+                i accept the{" "}
+                <span className="text-green-700">terms and condition</span> of
+                Al-Fattah
+              </small>
+            </div>
           </div>
-          <div className="flex gap-2 items-center">
-            <input
-              type="checkbox"
-              className="focus:outline-none bg-green-500"
-            />{" "}
-            <small className="capitalize">
-              i accept the{" "}
-              <span className="text-green-700">terms and condition</span> of
-              Al-Fattah
-            </small>
-          </div>
-          <div className="flex gap-2">
-            <div className="flex gap-2 items-center border-r-2 border-gray-300">
+          <div className="flex flex-col">
+            <div className="flex gap-2 items-center">
               <input
                 type="checkbox"
                 className="focus:outline-none bg-green-500"
               />{" "}
               <small className="capitalize">i am a muslim</small>
             </div>
-            <span className="capitalize">
+            <small className="capitalize">
               have an account?{" "}
-              <span className="text-green-700 underline">Sign In</span>
-            </span>
+              <Link to="/signIn">
+                <span className="text-green-700 underline">Sign In</span>
+              </Link>
+            </small>
           </div>
         </div>
         {/* SIgn Up Button */}
         <div>
-          <button className="w-full bg-gradient-to-r hover:bg-green-700 from-green-400 h-10 rounded-xl text-white font-semibold to-green-700">
-            Sign In
+          <button
+            onClick={handleSubmit}
+            disabled={holdBtn || loading}
+            className={`w-full bg-gradient-to-r ${holdBtn || loading ? "opacity-30" : ""} hover:bg-green-700 from-green-400 h-10 rounded-xl text-white font-semibold to-green-700`}
+          >
+            {loading ? "Loading..." : "Sign Up"}
           </button>
         </div>
       </div>
+
+      {/* Toaster */}
+      <Toaster />
     </div>
   );
 };
