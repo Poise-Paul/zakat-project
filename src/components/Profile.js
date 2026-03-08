@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
 const Profile = () => {
@@ -75,7 +74,6 @@ const Profile = () => {
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
-  const dispatch = useDispatch();
   // Update profile
   const handleUpdate = async () => {
     setLoading(true);
