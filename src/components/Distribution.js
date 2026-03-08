@@ -1,5 +1,3 @@
-import React from "react";
-import logo from "../assets/zakat-logo.png";
 import Header from "./Header";
 
 const Distribution = () => {

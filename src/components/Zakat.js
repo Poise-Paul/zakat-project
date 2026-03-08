@@ -1,6 +1,4 @@
-import React from "react";
 import islamicBg from "../assets/islamic-bg.jpeg";
-import logo from "../assets/zakat-logo.png";
 import Header from "./Header";
 
 const Zakat = () => {
