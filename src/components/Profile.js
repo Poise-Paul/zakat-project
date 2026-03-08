@@ -1,23 +1,17 @@
 import React, { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { updateUser } from "../redux/slices/registerSlice";
 
 const Profile = () => {
-  const [formData, setFormData] = useState({
-    email: "",
-    firstName: "",
-    lastName: "",
-    address: "",
-    baseCurrency: "",
-    zipCode: "",
-    state: "",
-    country: "",
-    city: "",
-  });
+  const [user, setUser] = useState(null);
+  const [formData, setFormData] = useState({});
   const [countries, setCountries] = useState([]);
   const [states, setStates] = useState([]);
   const [cities, setCities] = useState([]);
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
+  const [showModal, setShowModal] = useState(false);
 
   const navigate = useNavigate();
 
@@ -37,6 +31,7 @@ const Profile = () => {
         );
         const result = await response.json();
         if (result.status === "success") {
+          setUser(result.data.user);
           setFormData(result.data.user);
         } else {
           setMessage("❌ " + result.message);
@@ -46,9 +41,9 @@ const Profile = () => {
       }
     };
     fetchUser();
-  }, []);
+  }, [loading]);
 
-  // Fetch countries on mount
+  // Fetch countries
   useEffect(() => {
     fetch(
       "http://automatadev-001-site15.atempurl.com/api/v1/locations/countries",
@@ -81,7 +76,7 @@ const Profile = () => {
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
-
+  const dispatch = useDispatch();
   // Update profile
   const handleUpdate = async () => {
     setLoading(true);
@@ -98,8 +93,12 @@ const Profile = () => {
         },
       );
       const result = await response.json();
+      console.log("Hello", result);
+
       if (result.status === "success") {
         setMessage("✅ Profile updated successfully!");
+        setUser(result.data); // refresh displayed profile
+        setShowModal(false);
       } else {
         setMessage("❌ " + result.message);
       }
@@ -115,113 +114,47 @@ const Profile = () => {
       <div className="flex flex-col gap-4 p-6 bg-white rounded-xl shadow-md w-[30rem]">
         <h2 className="text-xl font-bold text-green-700">My Profile</h2>
 
-        {/* Editable fields */}
-        <input
-          type="text"
-          name="email"
-          value={formData.email}
-          onChange={handleChange}
-          placeholder="Email"
-          className="border p-2 rounded"
-        />
-        <input
-          type="text"
-          name="firstName"
-          value={formData.firstName}
-          onChange={handleChange}
-          placeholder="First Name"
-          className="border p-2 rounded"
-        />
-        <input
-          type="text"
-          name="lastName"
-          value={formData.lastName}
-          onChange={handleChange}
-          placeholder="Last Name"
-          className="border p-2 rounded"
-        />
-        <input
-          type="text"
-          name="address"
-          value={formData.address}
-          onChange={handleChange}
-          placeholder="Address"
-          className="border p-2 rounded"
-        />
-        <input
-          type="text"
-          name="baseCurrency"
-          value={formData.baseCurrency}
-          onChange={handleChange}
-          placeholder="Base Currency"
-          className="border p-2 rounded"
-        />
-        <input
-          type="text"
-          name="zipCode"
-          value={formData.zipCode}
-          onChange={handleChange}
-          placeholder="Zip Code"
-          className="border p-2 rounded"
-        />
+        {user ? (
+          <div className="flex flex-col gap-2">
+            <p>
+              <strong>Email:</strong> {user.email}
+            </p>
+            <p>
+              <strong>First Name:</strong> {user.firstName}
+            </p>
+            <p>
+              <strong>Last Name:</strong> {user.lastName}
+            </p>
+            <p>
+              <strong>Address:</strong> {user.address}
+            </p>
+            <p>
+              <strong>Currency:</strong> {user.baseCurrency}
+            </p>
+            <p>
+              <strong>Zip Code:</strong> {user.zipCode}
+            </p>
+            <p>
+              <strong>Country:</strong> {user.country}
+            </p>
+            <p>
+              <strong>State:</strong> {user.state}
+            </p>
+            <p>
+              <strong>City:</strong> {user.city}
+            </p>
+          </div>
+        ) : (
+          <p>Loading profile...</p>
+        )}
 
-        {/* Country dropdown */}
-        <select
-          value={formData.country}
-          onChange={(e) => handleCountryChange(e.target.value)}
-          className="border p-2 rounded"
-        >
-          <option value="">Select Country</option>
-          {countries.map((c) => (
-            <option key={c.id} value={c.name}>
-              {c.name}
-            </option>
-          ))}
-        </select>
-
-        {/* State dropdown */}
-        <select
-          value={formData.state}
-          onChange={(e) => {
-            const selected = states.find((s) => s.name === e.target.value);
-            handleStateChange(selected.id, selected.name);
-          }}
-          className="border p-2 rounded"
-        >
-          <option value="">Select State</option>
-          {states.map((s) => (
-            <option key={s.id} value={s.name}>
-              {s.name}
-            </option>
-          ))}
-        </select>
-
-        {/* City dropdown */}
-        <select
-          value={formData.city}
-          onChange={(e) => setFormData({ ...formData, city: e.target.value })}
-          className="border p-2 rounded"
-        >
-          <option value="">Select City</option>
-          {cities.map((c) => (
-            <option key={c.id} value={c.name}>
-              {c.name}
-            </option>
-          ))}
-        </select>
-
-        {/* Update Button */}
         <button
-          onClick={handleUpdate}
-          disabled={loading}
-          className={`bg-green-600 ${
-            loading ? "opacity-30" : ""
-          } text-white py-2 rounded`}
+          onClick={() => setShowModal(true)}
+          className="bg-green-600 text-white py-2 rounded"
         >
-          {loading ? "Updating..." : "Update Profile"}
+          Update Profile
         </button>
 
-        {/* Back Button */}
         <button
           onClick={() => navigate("/quickCalc")}
           className="bg-gray-300 hover:bg-gray-400 text-gray-800 py-2 rounded mt-2"
@@ -231,6 +164,122 @@ const Profile = () => {
 
         {message && <p className="text-sm">{message}</p>}
       </div>
+
+      {/* Update Modal */}
+      {showModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-40 flex justify-center items-center z-50">
+          <div className="bg-white rounded-xl shadow-lg w-[30rem] p-6 flex flex-col gap-4">
+            <h2 className="text-lg font-bold text-green-700">Update Profile</h2>
+
+            <input
+              type="text"
+              name="email"
+              value={formData.email}
+              onChange={handleChange}
+              className="border p-2 rounded"
+            />
+            <input
+              type="text"
+              name="firstName"
+              value={formData.firstName}
+              onChange={handleChange}
+              className="border p-2 rounded"
+            />
+            <input
+              type="text"
+              name="lastName"
+              value={formData.lastName}
+              onChange={handleChange}
+              className="border p-2 rounded"
+            />
+            <input
+              type="text"
+              name="address"
+              value={formData.address}
+              onChange={handleChange}
+              className="border p-2 rounded"
+            />
+            <input
+              type="text"
+              name="baseCurrency"
+              value={formData.baseCurrency}
+              onChange={handleChange}
+              className="border p-2 rounded"
+            />
+            <input
+              type="text"
+              name="zipCode"
+              value={formData.zipCode}
+              onChange={handleChange}
+              className="border p-2 rounded"
+            />
+
+            {/* Country dropdown */}
+            <select
+              value={formData.country}
+              onChange={(e) => handleCountryChange(e.target.value)}
+              className="border p-2 rounded"
+            >
+              <option value="">Select Country</option>
+              {countries.map((c) => (
+                <option key={c.id} value={c.name}>
+                  {c.name}
+                </option>
+              ))}
+            </select>
+
+            {/* State dropdown */}
+            <select
+              value={formData.state}
+              onChange={(e) => {
+                const selected = states.find((s) => s.name === e.target.value);
+                if (selected) handleStateChange(selected.id, selected.name);
+              }}
+              className="border p-2 rounded"
+            >
+              <option value="">Select State</option>
+              {states.map((s) => (
+                <option key={s.id} value={s.name}>
+                  {s.name}
+                </option>
+              ))}
+            </select>
+
+            {/* City dropdown */}
+            <select
+              value={formData.city}
+              onChange={(e) =>
+                setFormData({ ...formData, city: e.target.value })
+              }
+              className="border p-2 rounded"
+            >
+              <option value="">Select City</option>
+              {cities.map((c) => (
+                <option key={c.id} value={c.name}>
+                  {c.name}
+                </option>
+              ))}
+            </select>
+
+            {/* Modal Actions */}
+            <div className="flex justify-end gap-3 mt-4">
+              <button
+                onClick={() => setShowModal(false)}
+                className="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleUpdate}
+                disabled={loading}
+                className={`px-4 py-2 bg-green-600 text-white rounded ${loading ? "opacity-30" : ""}`}
+              >
+                {loading ? "Updating..." : "Save Changes"}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
