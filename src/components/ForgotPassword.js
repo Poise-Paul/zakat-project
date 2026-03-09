@@ -14,7 +14,7 @@ const ForgotPassword = () => {
     setLoading(true);
     try {
       const response = await fetch(
-        "http://automatadev-001-site15.atempurl.com/api/v1/authentication/forgot-password",
+        "https://automatadev-001-site15.atempurl.com/api/v1/authentication/forgot-password",
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },

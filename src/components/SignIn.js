@@ -25,7 +25,7 @@ const SignIn = () => {
     setLoading(true);
     try {
       const response = await fetch(
-        "http://automatadev-001-site15.atempurl.com/api/v1/authentication/login",
+        "https://automatadev-001-site15.atempurl.com/api/v1/authentication/login",
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -39,7 +39,7 @@ const SignIn = () => {
         // store token if needed
         dispatch(updateUser(result.data));
         localStorage.setItem("authToken", result.data.token.accessToken);
-        setTimeout(() => navigate("/quickCalc"), 1000);
+        setTimeout(() => navigate("/"), 1000);
       } else {
         toast.error(result.message);
         setMessage("❌ " + result.message);
@@ -136,11 +136,18 @@ const SignIn = () => {
               </Link>
             </small>
           </div>
-          <div className="">
+          <div className="flex my-2 justify-between items-center">
             <small className="">
               <Link to="/forgotPassword">
                 <span className="text-green-700 underline">
                   Forgot Password
+                </span>
+              </Link>
+            </small>
+            <small className="">
+              <Link to="/">
+                <span className="text-green-700 underline">
+                  Back to Home Page
                 </span>
               </Link>
             </small>

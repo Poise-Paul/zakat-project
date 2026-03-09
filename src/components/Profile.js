@@ -18,7 +18,7 @@ const Profile = () => {
     const fetchUser = async () => {
       try {
         const response = await fetch(
-          "http://automatadev-001-site15.atempurl.com/api/v1/authentication/get-current-user",
+          "https://automatadev-001-site15.atempurl.com/api/v1/authentication/get-current-user",
           {
             method: "GET",
             headers: {
@@ -44,7 +44,7 @@ const Profile = () => {
   // Fetch countries
   useEffect(() => {
     fetch(
-      "http://automatadev-001-site15.atempurl.com/api/v1/locations/countries",
+      "https://automatadev-001-site15.atempurl.com/api/v1/locations/countries",
     )
       .then((res) => res.json())
       .then((data) => setCountries(data.data.countries));
@@ -54,7 +54,7 @@ const Profile = () => {
   const handleCountryChange = (countryName) => {
     setFormData({ ...formData, country: countryName, state: "", city: "" });
     fetch(
-      `http://automatadev-001-site15.atempurl.com/api/v1/locations/countries/by-name/${countryName}/states`,
+      `https://automatadev-001-site15.atempurl.com/api/v1/locations/countries/by-name/${countryName}/states`,
     )
       .then((res) => res.json())
       .then((data) => setStates(data.data.states));
@@ -64,7 +64,7 @@ const Profile = () => {
   const handleStateChange = (stateId, stateName) => {
     setFormData({ ...formData, state: stateName, city: "" });
     fetch(
-      `http://automatadev-001-site15.atempurl.com/api/v1/locations/states/${stateId}/cities`,
+      `https://automatadev-001-site15.atempurl.com/api/v1/locations/states/${stateId}/cities`,
     )
       .then((res) => res.json())
       .then((data) => setCities(data.data.cities));
@@ -79,7 +79,7 @@ const Profile = () => {
     setLoading(true);
     try {
       const response = await fetch(
-        "http://automatadev-001-site15.atempurl.com/api/v1/authentication/profile",
+        "https://automatadev-001-site15.atempurl.com/api/v1/authentication/profile",
         {
           method: "PATCH",
           headers: {

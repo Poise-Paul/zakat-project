@@ -21,6 +21,9 @@ import { PersistGate } from "redux-persist/integration/react";
 import ForgotPassword from "./components/ForgotPassword";
 import ResetPassword from "./components/ResetPassword";
 import Profile from "./components/Profile";
+import ZakatQualification from "./components/QualifyForZakat";
+import ZakatCalculations from "./components/MainCalculations";
+import ZakatDistribution from "./components/ZakatDistribution";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
@@ -40,6 +43,9 @@ root.render(
             <Route path="/quickCalc" element={<QuickCalc />} />
             <Route path="/zakatAssets" element={<ZakatAssets />} />
             <Route path="/zakatLiability" element={<ZakatLiability />} />
+            <Route path="/qualifyForZakat" element={<ZakatQualification />} />
+            <Route path="/mainCalculations" element={<ZakatCalculations />} />
+            <Route path="/zakatDistribution" element={<ZakatDistribution />} />
             <Route path="/verifyOtp" element={<VerifyOTP />} />
             <Route path="/forgotPassword" element={<ForgotPassword />} />
             <Route path="/resetPassword" element={<ResetPassword />} />
@@ -51,7 +57,4 @@ root.render(
   </React.StrictMode>,
 );
 
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
 reportWebVitals();

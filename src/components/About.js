@@ -7,7 +7,7 @@ const About = () => {
       {/* Fix Header Here */}
       <Header />
       {/* Header Ends Here */}
-      <div className="bg-green-300/75 h-full flex justify-center px-10 items-center gap-5 w-full">
+      <div className="bg-green-300/75 h-full flex justify-center px-40 items-center gap-5 w-full">
         <div className="w-[60%] text-left flex flex-col gap-3">
           <h1 className="uppercase text-green-800 font-black text-6xl">
             About Us

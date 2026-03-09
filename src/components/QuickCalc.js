@@ -50,7 +50,10 @@ const QuickCalc = () => {
     <div>
       {/* Header */}
       <div className="bg-gradient-to-b from-green-400 to-green-700 h-28 grid grid-cols-3">
-        <div className="flex px-5 items-center gap-4">
+        <div
+          onClick={() => navigate("/")}
+          className="flex px-5 cursor-pointer items-center gap-4"
+        >
           <img src={whitelogo} alt="Al-Fattah" />
           <div className="text-white">
             <h1 className="uppercase text-2xl font-black">al-fattah</h1>
@@ -124,15 +127,23 @@ const QuickCalc = () => {
                 <li>other assets</li>
               </ul>
             </div>
+
             <div className="flex justify-center">
               <div className="flex flex-col gap-4">
                 {assets.map((val, i) => (
                   <div key={i} className="bg-gray-300 w-60 rounded-lg p-2">
                     <input
                       type="number"
+                      min="0" // Stops the step-down arrow from going below 0
                       placeholder="N0.00"
                       value={val}
-                      onChange={(e) => handleAssetChange(i, e.target.value)}
+                      onChange={(e) => {
+                        const value = e.target.value;
+                        // Only update if the value is not negative
+                        if (value >= 0 || value === "") {
+                          handleAssetChange(i, value);
+                        }
+                      }}
                       className="bg-transparent w-full focus:outline-none text-right"
                     />
                   </div>
@@ -157,13 +168,22 @@ const QuickCalc = () => {
             <div className="flex justify-center">
               <div className="flex flex-col gap-4">
                 {liabilities.map((val, i) => (
-                  <div key={i} className="bg-gray-300 w-60 rounded-lg p-2">
+                  <div
+                    key={i}
+                    className="bg-gray-300 w-60 rounded-lg p-2 transition-all focus-within:ring-2 ring-red-400"
+                  >
                     <input
                       type="number"
+                      min="0" // Prevents the browser's number stepper from going negative
                       placeholder="N0.00"
                       value={val}
-                      onChange={(e) => handleLiabilityChange(i, e.target.value)}
-                      className="bg-transparent w-full focus:outline-none text-right"
+                      onChange={(e) => {
+                        const value = e.target.value;
+                        if (value >= 0 || value === "") {
+                          handleLiabilityChange(i, value);
+                        }
+                      }}
+                      className="bg-transparent w-full focus:outline-none text-right font-mono font-bold text-red-700"
                     />
                   </div>
                 ))}

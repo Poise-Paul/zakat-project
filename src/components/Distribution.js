@@ -6,7 +6,7 @@ const Distribution = () => {
       {/* Fix Header Here */}
       <Header />
       {/* End Header */}
-      <div className="bg-green-300/75 h-full flex justify-center px-10 items-center gap-5 w-full">
+      <div className="bg-green-300/75 h-full flex flex-col justify-center px-40 items-center gap-5 w-full">
         <div className="flex flex-col gap-4">
           <h1 className="capitalize text-6xl text-green-700 font-black">
             Zakat Assets
@@ -114,6 +114,15 @@ const Distribution = () => {
               </div>
             </div>
           </div>
+        </div>
+        {/* Distribution Link */}
+        <div>
+          <a
+            className="text-green-500 text-2xl font-bold underline"
+            href="/zakatDistribution"
+          >
+            Distribute my zakat
+          </a>{" "}
         </div>
       </div>
     </div>
