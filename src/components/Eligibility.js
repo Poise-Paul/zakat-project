@@ -6,16 +6,16 @@ const Eligibility = () => {
     <div className="App flex flex-col h-screen">
       <Header />
       {/* End the Header */}
-      <div className="bg-green-300/75 h-full flex justify-center px-40 items-center gap-10 w-full">
+      <div className="bg-green-300/75 md:min-h-screen flex justify-center px-6 sm:px-10 md:px-20 lg:px-40 items-center gap-10 w-full py-10">
         <div className="w-full text-left flex flex-col gap-6">
           {/* Heading */}
-          <h1 className="capitalize text-green-800 font-black text-8xl mb-4">
+          <h1 className="capitalize text-green-800 font-black text-3xl sm:text-5xl md:text-7xl mb-4 text-center md:text-left">
             Eligibility
           </h1>
 
-          {/* Main Content Grid */}
-          <div className="grid grid-cols-2 gap-12 text-gray-800 leading-relaxed">
-            {/* Left Column: General Rules */}
+          {/* Content Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 text-gray-800 leading-relaxed">
+            {/* Left Column */}
             <div className="flex flex-col gap-5">
               <p>
                 The amount of zakat to be paid by an individual depends on the
@@ -37,10 +37,10 @@ const Eligibility = () => {
               </p>
             </div>
 
-            {/* Right Column: Qualification & Scholar Differences */}
-            <div className="flex flex-col gap-4">
+            {/* Right Column */}
+            <div className="flex flex-col gap-6">
               <div>
-                <h2 className="text-2xl font-bold text-black mb-2">
+                <h2 className="text-xl sm:text-2xl font-bold text-black mb-2">
                   Qualification
                 </h2>
                 <p className="mb-2">Zakat is usually payable on assets:</p>
@@ -52,8 +52,8 @@ const Eligibility = () => {
                 </ul>
               </div>
 
-              <div className="mt-4">
-                <h2 className="text-xl font-bold text-black leading-tight mb-3">
+              <div>
+                <h2 className="text-lg sm:text-xl font-bold text-black leading-tight mb-3">
                   The kinds of wealth that are zakatable are subject to
                   differences among scholars.
                 </h2>

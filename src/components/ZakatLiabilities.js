@@ -40,10 +40,10 @@ const LiabilityManager = () => {
   return (
     <div className="flex flex-col min-h-screen bg-gray-50">
       {/* Header with Back Button */}
-      <div className="bg-gradient-to-r from-green-600 to-green-800 h-24 flex justify-center items-center shadow-lg relative">
+      <div className="bg-gradient-to-r from-green-600 to-green-800 md:h-24 h-40 flex md:flex-row flex-col justify-center items-center shadow-lg relative">
         <button
           onClick={() => navigate(-1)}
-          className="absolute left-10 flex items-center gap-2 text-white hover:text-green-200 transition-colors font-semibold group"
+          className="md:absolute left-10 md:pb-0 pb-5 flex items-center gap-2 text-white hover:text-green-200 transition-colors font-semibold group"
         >
           <div className="p-2 bg-white/10 rounded-full group-hover:bg-white/20">
             <svg

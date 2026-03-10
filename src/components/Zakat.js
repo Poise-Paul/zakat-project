@@ -6,22 +6,24 @@ const Zakat = () => {
     <div className="App flex flex-col h-screen">
       <Header />
       {/* Header Ends here */}
-      <div className="bg-green-300/75 h-full flex justify-center px-40 items-center gap-10 w-full">
-        <div className="w-[60%] text-left flex flex-col gap-5">
-          {/* Heading matching the bold orange/gold style from the image */}
-          <h1 className="capitalize text-green-800 font-black text-7xl mb-4">
+      <div className="bg-green-300/75 md:min-h-screen flex flex-col md:flex-row justify-center px-6 md:px-20 lg:px-40 items-center gap-10 w-full py-10">
+        {/* Text Section */}
+        <div className="w-full md:w-[60%] text-left flex flex-col gap-5">
+          {/* Heading */}
+          <h1 className="capitalize text-green-800 font-black text-3xl sm:text-5xl md:text-7xl mb-4 text-center md:text-left">
             What is Zakat?
           </h1>
 
-          <div className="grid grid-cols-2 gap-8 text-gray-800 leading-relaxed">
-            {/* Left Column Text */}
+          {/* Grid for text content */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 text-gray-800 leading-relaxed">
+            {/* Left Column */}
             <div className="flex flex-col gap-4">
               <p>
                 Zakat (Arabic: زكاة; [za'ka:t], "that which purifies", also
-                Zakat al-mal [za'ka:t al'ma:l] زكاة المال, "zakat on wealth", or
-                Zakah) is a form of almsgiving, often collected by the Muslim
-                Ummah treated in Islam as a religious obligation, which, by
-                Quranic ranking, is next after prayer (salat) in importance.
+                Zakat al-mal زكاة المال, "zakat on wealth", or Zakah) is a form
+                of almsgiving, treated in Islam as a religious obligation,
+                which, by Quranic ranking, is next after prayer (salat) in
+                importance.
               </p>
               <p>
                 As one of the Five Pillars of Islam, zakat is a religious duty
@@ -40,11 +42,12 @@ const Zakat = () => {
               </ul>
             </div>
 
-            {/* Right Column Text */}
+            {/* Right Column */}
             <div className="flex flex-col gap-4">
               <p>
-                • It is customarily **2.5% (or 1/40)** of a Muslim's total
-                savings and wealth above a minimum amount known as{" "}
+                • It is customarily{" "}
+                <span className="font-bold">2.5% (or 1/40)</span> of a Muslim's
+                total savings and wealth above a minimum amount known as{" "}
                 <span className="text-blue-500 italic font-semibold">
                   nisab
                 </span>{" "}
@@ -57,25 +60,25 @@ const Zakat = () => {
               </h2>
 
               <ul className="list-disc pl-5 flex flex-col gap-1 font-medium">
-                <li>The poor and the needy,</li>
-                <li>Zakat collectors,</li>
-                <li>Recent converts to Islam,</li>
-                <li>Those to be freed from slavery,</li>
-                <li>Those in debt,</li>
-                <li>In the cause of Allah, and</li>
-                <li>Benefit the stranded traveler.</li>
+                <li>The poor and the needy</li>
+                <li>Zakat collectors</li>
+                <li>Recent converts to Islam</li>
+                <li>Those to be freed from slavery</li>
+                <li>Those in debt</li>
+                <li>In the cause of Allah</li>
+                <li>Benefit the stranded traveler</li>
               </ul>
             </div>
           </div>
 
-          {/* The Footer Statement from the image */}
-          <p className="mt-8 text-purple-700 font-semibold text-xl italic">
+          {/* Footer Statement */}
+          <p className="mt-8 text-purple-700 font-semibold text-lg sm:text-xl italic text-center md:text-left">
             Zakat is considered part of the covenant between God and a Muslim.
           </p>
         </div>
 
         {/* Image Section */}
-        <div className="w-[40%] flex flex-col justify-center">
+        <div className="w-full md:w-[40%] flex flex-col justify-center">
           <div className="bg-white/75 p-4 rounded-3xl shadow-2xl overflow-hidden">
             <img
               src={islamicBg}
@@ -85,6 +88,7 @@ const Zakat = () => {
           </div>
         </div>
       </div>
+      {/* End Second Design */}
     </div>
   );
 };

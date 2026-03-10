@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
 import { useNavigate } from "react-router";
+import { Link } from "react-router-dom";
 
 const ZakatCalculations = () => {
   const [items, setItems] = useState([]); // Combined list for Assets and Liabilities
@@ -148,7 +149,7 @@ const navigate = useNavigate()
     <div className="min-h-screen bg-gray-50 p-8 font-sans">
       <div className="max-w-7xl mx-auto">
         {/* Header */}
-        <div className="flex justify-between items-center mb-10">
+        <div className="flex md:flex-row flex-col md:gap-0 gap-4 justify-between items-center mb-10">
           <button
             onClick={() => navigate(-1)}
             className="flex items-center gap-2 text-gray-500 hover:text-orange-400 transition-all font-bold group"
@@ -342,13 +343,22 @@ const navigate = useNavigate()
                 NGN {netZakatableNGN.toLocaleString()}
               </p>
             </div>
-            <div className="bg-green-600 p-8 rounded-2xl shadow-xl text-white transform scale-105 origin-left">
-              <h2 className="text-xl font-black mb-2 uppercase">
-                Zakat Due (2.5%)
-              </h2>
-              <p className="text-5xl font-black">
-                NGN {zakatDue.toLocaleString()}
-              </p>
+            <div className="bg-green-600 p-8 rounded-2xl shadow-xl flex justify-between text-white transform scale-105 origin-left">
+              <div>
+                <h2 className="text-xl font-black mb-2 uppercase">
+                  Zakat Due (2.5%)
+                </h2>
+                <p className="text-5xl font-black">
+                  NGN {zakatDue.toLocaleString()}
+                </p>
+              </div>
+
+              {/* Distribute Zakat */}
+              <button className="bg-green-700 max-h-fit text-white px-6 py-3 rounded-lg font-bold">
+                <Link to={`/zakatDistribution/${zakatDue}`}>
+                  Distribute My Zakat
+                </Link>
+              </button>
             </div>
           </div>
         </div>

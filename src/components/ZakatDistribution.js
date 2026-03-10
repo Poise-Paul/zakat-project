@@ -1,9 +1,12 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import autoTable from "jspdf-autotable";
 import jsPDF from "jspdf";
-import { useNavigate } from "react-router";
+import { useNavigate, useParams } from "react-router";
 
-const ZakatDistribution = ({ zakatDue = 345201234567.89 }) => {
+const ZakatDistribution = ({}) => {
+  const [zakatDue, setZakatDue] = useState(0);
+  const { amount } = useParams();
+
   const [distributions, setDistributions] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [formData, setFormData] = useState({ recipient: "", percentage: "" });
@@ -36,8 +39,23 @@ const ZakatDistribution = ({ zakatDue = 345201234567.89 }) => {
     });
     doc.save("Distribution_Plan.pdf");
   };
-  
-  const navigate = useNavigate()
+
+  useEffect(() => {
+    if (amount) {
+      setZakatDue(amount);
+    }
+  }, [amount]);
+
+  const navigate = useNavigate();
+
+  //   UYpdating Zakat Due
+  const [isEditingZakat, setIsEditingZakat] = useState(false);
+  const [manualZakat, setManualZakat] = useState("");
+
+  const handleSetManualZakat = () => {
+    setZakatDue(parseFloat(manualZakat) || 0);
+    setIsEditingZakat(false);
+  };
 
   return (
     <div className="min-h-screen bg-white p-12 font-sans">
@@ -125,6 +143,27 @@ const ZakatDistribution = ({ zakatDue = 345201234567.89 }) => {
         {/* Totals Sidebar */}
         <div className="bg-green-400 p-8 rounded-sm h-fit">
           <div className="flex flex-col gap-8">
+            {/* Edit Button */}
+            <div className="flex justify-between items-center mb-2">
+              <h3 className="text-2xl font-black text-[#0c3d2e]">Zakat Due</h3>
+              <button
+                onClick={() => setIsEditingZakat(true)}
+                className="text-[#0c3d2e] hover:text-white transition-colors"
+                title="Manual Entry"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-5 w-5"
+                  viewBox="0 0 20 20"
+                  fill="currentColor"
+                >
+                  <path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z" />
+                </svg>
+              </button>
+            </div>
+
+            {/* End Edit Button */}
+
             <section>
               <h3 className="text-2xl font-black mb-2">Zakat Due</h3>
               <p className="flex justify-between text-xl font-bold">
@@ -197,6 +236,49 @@ const ZakatDistribution = ({ zakatDue = 345201234567.89 }) => {
                 className="bg-cyan-500 text-white px-8 py-3 rounded-xl font-black shadow-lg"
               >
                 CONFIRM
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Manual Zakat Update */}
+
+      {isEditingZakat && (
+        <div className="fixed inset-0 z-[60] flex items-center justify-center bg-black/50 p-4">
+          <div className="bg-white rounded-2xl p-8 w-full max-w-sm shadow-2xl">
+            <h2 className="text-2xl font-black mb-4 text-gray-800">
+              Enter Zakat Due
+            </h2>
+            <p className="text-gray-500 mb-6 text-sm">
+              If you already have your calculated total, enter it here to begin
+              distribution.
+            </p>
+
+            <div className="bg-gray-100 p-4 rounded-xl flex items-center gap-3 mb-8">
+              <span className="font-black text-gray-400">NGN</span>
+              <input
+                type="number"
+                autoFocus
+                className="bg-transparent w-full outline-none text-xl font-bold"
+                placeholder="0.00"
+                value={manualZakat}
+                onChange={(e) => setManualZakat(e.target.value)}
+              />
+            </div>
+
+            <div className="flex gap-4">
+              <button
+                onClick={() => setIsEditingZakat(false)}
+                className="flex-1 py-3 font-bold text-gray-400"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleSetManualZakat}
+                className="flex-1 py-3 bg-[#0c3d2e] text-white rounded-xl font-bold shadow-lg"
+              >
+                Set Amount
               </button>
             </div>
           </div>

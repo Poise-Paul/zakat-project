@@ -17,8 +17,9 @@ const About = () => {
             livelihood.
           </p>
           <p>Drop us a line or two if you want to work together with us!</p>
-          <p>
-            info@al-fattah.org <br /> www.alfattah.org{" "}
+          <p className="font-bold underline">
+            <a href="www://info@al-fattah.org">info@al-fattah.org</a> <br />
+            <a href="www://www.alfattah.org">www.alfattah.org</a>
           </p>
         </div>
         <div className="w-[40%] flex flex-col justify-around gap-7">

@@ -5,7 +5,7 @@ const LogoutModal = ({ isOpen, onClose, onConfirm }) => {
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-40 flex justify-center items-center z-50">
-      <div className="bg-white rounded-xl shadow-lg w-[25rem] p-6 flex flex-col gap-4">
+      <div className="bg-white rounded-xl shadow-lg w-[90%] sm:w-[25rem] p-6 flex flex-col gap-4">
         <h2 className="text-xl font-bold text-gray-800 text-center">
           Are you sure you want to Logout?
         </h2>

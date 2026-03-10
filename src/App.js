@@ -19,9 +19,9 @@ function App() {
     console.log("User Detail.s", user);
   }, [user]);
 
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
 
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const handleLogout = () => {
     // Clear auth token or user data
@@ -35,42 +35,41 @@ function App() {
     <div className="App flex flex-col h-screen">
       {/* Fix Header Here */}
       <Header />
-      <div className="bg-green-300/75 h-full flex justify-center px-20 items-center gap-5 w-full">
-        <div className="w-[40%] text-left flex flex-col gap-3">
-          <h1 className="uppercase text-green-800 font-black text-6xl">
+      <div className="bg-green-300/75 md:h-full flex flex-col md:flex-row justify-center px-6 md:px-20 items-center gap-5 w-full">
+        <div className="w-full md:w-[40%] text-left flex flex-col gap-3">
+          <h1 className="uppercase text-green-800 font-black text-3xl sm:text-5xl md:text-6xl">
             zakat
           </h1>
-          <h1 className="capitalize font-black text-5xl">
+          <h1 className="capitalize font-black text-2xl sm:text-4xl md:text-5xl">
             Calculate and Distribute your zakat
           </h1>
-          <h4 className="text-2xl text-gray-500 font-semibold">
+          <h4 className="text-lg sm:text-xl md:text-2xl text-gray-500 font-semibold">
             Zakat literally means{" "}
             <span className="italic text-green-700">'that which purifies'</span>
           </h4>
-          <p className="font-semibold text-lg">
+          <p className="font-semibold text-sm sm:text-base md:text-lg">
             It is a form of sacrifice which purifies wordly goods from thier
             wordly and something impure means of acquisition, and which
             according to God's wish, must be channeled towards the
             community.{" "}
           </p>
+          {/* Buttons */}
           {user ? (
-            <div>
-              <button
-                onClick={() => setShowLogout(true)}
-                className="border-2 border-gray-500 font-semibold rounded-lg py-2 px-7 hover:bg-gray-300 transition duration-500 ease-in-out"
-              >
-                Logout
-              </button>
-            </div>
+            <button
+              onClick={() => setShowLogout(true)}
+              className="border-2 border-gray-500 max-w-fit font-semibold rounded-lg py-2 px-7 hover:bg-gray-300 transition duration-500 ease-in-out"
+            >
+              Logout
+            </button>
           ) : (
-            <div className="flex gap-4">
+            <div className="flex flex-wrap gap-4">
               <Link to="/SignIn">
-                <button className="border-2 border-gray-500 font-semibold rounded-lg py-2 px-7 hover:bg-gray-300 transition duration-500 ease-in-out">
+                <button className="border-2 border-gray-500 font-semibold rounded-lg py-2 px-7 hover:bg-gray-300">
                   Login
                 </button>
               </Link>
-              <Link to="SignUp">
-                <button className="border-2 font-semibold border-gray-500 rounded-lg py-2 px-7 hover:bg-gray-300 transition duration-500 ease-in-ou">
+              <Link to="/SignUp">
+                <button className="border-2 border-gray-500 font-semibold rounded-lg py-2 px-7 hover:bg-gray-300">
                   Sign up
                 </button>
               </Link>
@@ -83,9 +82,9 @@ function App() {
           )}
         </div>
 
-        <div className="w-[60%] flex flex-col justify-around gap-10">
+        <div className="w-full md:w-[60%] flex flex-col gap-10">
           {/* First Row */}
-          <div className="flex justify-around gap-8">
+          <div className="flex flex-col sm:flex-row justify-around gap-8">
             {/* Card 01 */}
             <div className="bg-gradient-to-r from-yellow-500 to-orange-500 pr-5 pt-5 text-center rounded-xl shadow-lg">
               <h1 className="font-black text-left pl-5 text-white text-3xl mb-3">
@@ -127,7 +126,7 @@ function App() {
           </div>
 
           {/* Second Row */}
-          <div className="flex justify-around gap-8">
+          <div className="flex flex-col sm:flex-row justify-around gap-8">
             {/* Card 04 */}
             <div className="bg-gradient-to-r from-blue-500 to-blue-800 pr-5 pt-5 text-center rounded-xl shadow-lg">
               <h1 className="font-black text-white pl-5 text-3xl text-left mb-3">

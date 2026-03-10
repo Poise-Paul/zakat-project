@@ -45,7 +45,7 @@ root.render(
             <Route path="/zakatLiability" element={<ZakatLiability />} />
             <Route path="/qualifyForZakat" element={<ZakatQualification />} />
             <Route path="/mainCalculations" element={<ZakatCalculations />} />
-            <Route path="/zakatDistribution" element={<ZakatDistribution />} />
+            <Route path="/zakatDistribution/:amount" element={<ZakatDistribution />} />
             <Route path="/verifyOtp" element={<VerifyOTP />} />
             <Route path="/forgotPassword" element={<ForgotPassword />} />
             <Route path="/resetPassword" element={<ResetPassword />} />

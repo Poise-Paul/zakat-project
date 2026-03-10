@@ -2,17 +2,15 @@ import { Link, useLocation } from "react-router-dom";
 import logo from "../assets/zakat-logo.png";
 
 const Header = () => {
-  // 1. Get the current pathname (e.g., "/eligibility")
   const location = useLocation();
   const currentPath = location.pathname;
 
-  // 2. Helper function to apply conditional classes
   const getNavClass = (path) => {
+    // Removed border-r-2 for mobile to prevent weird vertical lines
     const baseClass =
-      "border-r-2 border-gray-200 p-2 h-10 cursor-pointer transition duration-500 ease-in-out";
-    const activeClass = "text-green-700";
+      "p-2 cursor-pointer transition duration-500 ease-in-out whitespace-nowrap";
+    const activeClass = "text-green-700 font-bold";
     const inactiveClass = "text-gray-400 hover:text-green-700";
-
     return `${baseClass} ${currentPath === path ? activeClass : inactiveClass}`;
   };
 
@@ -21,35 +19,35 @@ const Header = () => {
     { name: "Eligibility", path: "/eligibility" },
     { name: "Calculation", path: "/calculation" },
     { name: "Distribution", path: "/distribution" },
-    { name: "About Us", path: "/about" },
   ];
 
   return (
-    <div className="flex items-center justify-center h-[20%] bg-white border-b">
-      <div className="grid grid-cols-2 w-full max-w-7xl px-4">
-        <Link to="/">
-          <div className="flex gap-4 items-center">
-            <img
-              src={logo}
-              alt="zakat-logo"
-              className="h-20 w-20 object-contain"
-            />
-            <div className="uppercase text-3xl">
-              <h1 className="font-black leading-none">al-fattah</h1>
-              <h1 className="font-semibold leading-none">Foundation</h1>
-            </div>
+    <header className="w-full bg-white border-b sticky top-0 z-50">
+      <div className="max-w-7xl mx-auto px-4 py-4 flex flex-col md:flex-row justify-between items-center gap-4">
+        <Link to="/" className="flex gap-3 items-center">
+          <img src={logo} alt="logo" className="h-12 md:h-16 object-contain" />
+          <div className="uppercase text-center md:text-left">
+            <h1 className="font-black text-xl md:text-2xl leading-none">
+              al-fattah
+            </h1>
+            <h1 className="font-semibold text-lg md:text-xl leading-none">
+              Foundation
+            </h1>
           </div>
         </Link>
 
-        <div className="flex items-center">
+        <nav className="flex flex-wrap items-center justify-center md:justify-start gap-3 overflow-x-auto w-full md:w-auto no-scrollbar">
           {navLinks.map((link) => (
-            <div key={link.path} className={getNavClass(link.path)}>
-              <Link to={link.path}>{link.name}</Link>
-            </div>
+            <Link
+              key={link.path}
+              to={link.path}
+              className={getNavClass(link.path)}
+            >
+              {link.name}
+            </Link>
           ))}
-
-          <div className="flex text-green-900 p-2 items-center gap-1 cursor-pointer">
-            My Account
+          <div className="flex text-green-900 p-2 items-center gap-1 font-bold shrink-0">
+            Account
             <svg
               xmlns="http://www.w3.org/2000/svg"
               className="h-5 w-5"
@@ -63,9 +61,9 @@ const Header = () => {
               />
             </svg>
           </div>
-        </div>
+        </nav>
       </div>
-    </div>
+    </header>
   );
 };
 
