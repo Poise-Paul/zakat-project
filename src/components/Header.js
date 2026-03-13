@@ -1,5 +1,6 @@
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import logo from "../assets/zakat-logo.png";
+import { useSelector } from "react-redux";
 
 const Header = () => {
   const location = useLocation();
@@ -14,12 +15,25 @@ const Header = () => {
     return `${baseClass} ${currentPath === path ? activeClass : inactiveClass}`;
   };
 
+  const user = useSelector((state) => state.register.user);
+
   const navLinks = [
     { name: "What is Zakat", path: "/zakatMeaning" },
     { name: "Eligibility", path: "/eligibility" },
     { name: "Calculation", path: "/calculation" },
     { name: "Distribution", path: "/distribution" },
   ];
+
+  const navigate = useNavigate();
+
+  const handleProtectedNavigation = (e) => {
+    // If no user exists
+    if (!user) {
+      e.preventDefault(); // Stop the link from opening
+      alert("Please Login to View Profile");
+      navigate("/"); // Re-route to home
+    }
+  };
 
   return (
     <header className="w-full bg-white border-b sticky top-0 z-50">
@@ -46,8 +60,12 @@ const Header = () => {
               {link.name}
             </Link>
           ))}
-          <div className="flex text-green-900 p-2 items-center gap-1 font-bold shrink-0">
-            Account
+          <Link
+            to="/profile"
+            onClick={handleProtectedNavigation}
+            className={`flex p-2 text-gray-400 ${currentPath === "/profile" && "font-bold text-green-900"} hover:text-green-700 items-center gap-1 shrink-0`}
+          >
+            Account{" "}
             <svg
               xmlns="http://www.w3.org/2000/svg"
               className="h-5 w-5"
@@ -60,7 +78,7 @@ const Header = () => {
                 clipRule="evenodd"
               />
             </svg>
-          </div>
+          </Link>
         </nav>
       </div>
     </header>

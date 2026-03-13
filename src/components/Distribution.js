@@ -1,6 +1,21 @@
+import { Link, useNavigate } from "react-router-dom";
 import Header from "./Header";
+import { useSelector } from "react-redux";
 
 const Distribution = () => {
+  const user = useSelector((state) => state.register.user);
+
+  const navigate = useNavigate()
+
+  const handleProtectedNavigation = (e) => {
+    // If no user exists
+    if (!user) {
+      e.preventDefault(); // Stop the link from opening
+      alert("Please Login to Enter Zakat Assets");
+      navigate("/"); // Re-route to home
+    }
+  };
+
   return (
     <div className="App flex flex-col h-screen">
       {/* Fix Header Here */}
@@ -142,12 +157,13 @@ const Distribution = () => {
         </div>
         {/* Distribution Link */}
         <div>
-          <a
-            className="text-green-600 text-lg sm:text-xl md:text-2xl font-bold underline"
-            href="/zakatDistribution/0"
+          <Link
+            to="/zakatDistribution/0"
+            onClick={handleProtectedNavigation}
+            className="text-green-600 font-bold underline"
           >
             Distribute my zakat
-          </a>{" "}
+          </Link>
         </div>
       </div>
     </div>

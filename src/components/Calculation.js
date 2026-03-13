@@ -1,6 +1,20 @@
+import { useSelector } from "react-redux";
 import Header from "./Header";
+import { Link, useNavigate } from "react-router-dom";
 
 const Calculation = () => {
+  const user = useSelector((state) => state.register.user);
+
+  const navigate = useNavigate();
+
+  const handleProtectedNavigation = (e) => {
+    // If no user exists
+    if (!user) {
+      e.preventDefault(); // Stop the link from opening
+      alert("Please Login to Enter Zakat Assets");
+      navigate("/"); // Re-route to home
+    }
+  };
   return (
     <div className="App flex flex-col h-screen">
       <Header />
@@ -12,12 +26,13 @@ const Calculation = () => {
             <div className="flex items-center gap-3">
               <h1 className="text-4xl sm:text-6xl md:text-7xl font-black">1</h1>
               <div className="capitalize text-lg sm:text-xl md:text-2xl">
-                <a
-                  href="/zakatAssets"
+                <Link
+                  to="/zakatAssets"
+                  onClick={handleProtectedNavigation}
                   className="text-green-600 font-bold underline"
                 >
                   Enter My Zakatable Assets
-                </a>
+                </Link>
               </div>
             </div>
 
@@ -25,9 +40,13 @@ const Calculation = () => {
             <div className="flex items-center gap-3">
               <h1 className="text-4xl sm:text-6xl md:text-7xl font-black">2</h1>
               <div className="capitalize font-bold text-lg sm:text-xl md:text-2xl">
-                <a href="/qualifyForZakat" className="text-green-600 underline">
+                <Link
+                  to="/qualifyForZakat"
+                  onClick={handleProtectedNavigation}
+                  className="text-green-600 font-bold underline"
+                >
                   Do I qualify to give zakat?
-                </a>
+                </Link>
               </div>
             </div>
 
@@ -35,22 +54,32 @@ const Calculation = () => {
             <div className="flex items-center gap-3">
               <h1 className="text-4xl sm:text-6xl md:text-7xl font-black">3</h1>
               <div className="capitalize font-bold text-lg sm:text-xl md:text-2xl">
-                <a href="/zakatLiability" className="text-green-600 underline">
+                <Link
+                  to="/zakatLiability"
+                  onClick={handleProtectedNavigation}
+                  className="text-green-600 font-bold underline"
+                >
                   Enter My Zakatable Liabilities
-                </a>
+                </Link>
               </div>
             </div>
 
             {/* Step 4 */}
             <div className="flex items-center gap-3">
               <h1 className="text-4xl sm:text-6xl md:text-7xl font-black">4</h1>
-              <div className="capitalize font-bold text-lg sm:text-xl md:text-2xl">
-                <a
-                  href="/mainCalculations"
-                  className="text-green-600 underline"
+              <div
+                My
+                Zakatable
+                Liabilitiesiv
+                className="capitalize font-bold text-lg sm:text-xl md:text-2xl"
+              >
+                <Link
+                  to="/mainCalculations"
+                  onClick={handleProtectedNavigation}
+                  className="text-green-600 font-bold underline"
                 >
                   Calculate My Zakat
-                </a>
+                </Link>
               </div>
             </div>
           </div>

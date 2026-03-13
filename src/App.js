@@ -29,6 +29,7 @@ function App() {
     dispatch(updateUser(null));
     // Redirect to login
     navigate("/");
+    setShowLogout(false);
   };
 
   return (
