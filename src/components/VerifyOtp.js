@@ -33,7 +33,7 @@ const VerifyOTP = () => {
 
     try {
       const response = await fetch(
-        "https://automatadev-001-site15.atempurl.com/api/v1/authentication/verify-email",
+        "http://automatadev-001-site16.atempurl.com/api/v1/authentication/verify-email",
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -64,7 +64,7 @@ const VerifyOTP = () => {
 
     try {
       const response = await fetch(
-        "https://automatadev-001-site15.atempurl.com/api/v1/authentication/resend-verification-otp",
+        "http://automatadev-001-site16.atempurl.com/api/v1/authentication/resend-verification-otp",
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },

@@ -1,8 +1,12 @@
 import axios from "axios";
 
 const api = axios.create({
-  baseURL: "https://automatadev-001-site15.atempurl.com/api/v1",
+  baseURL: "http://automatadev-001-site16.atempurl.com/api/v1",
 });
+
+// http://automatadev-001-site16.atempurl.com/api/v1
+
+// Dev - https://automatadev-001-site15.atempurl.com/api/v1
 
 // Interceptor to add the token to every request
 api.interceptors.request.use(

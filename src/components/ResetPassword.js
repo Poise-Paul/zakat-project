@@ -28,7 +28,7 @@ const ResetPassword = () => {
     setLoading(true);
     try {
       const response = await fetch(
-        "https://automatadev-001-site15.atempurl.com/api/v1/authentication/reset-password",
+        "http://automatadev-001-site16.atempurl.com/api/v1/authentication/reset-password",
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },

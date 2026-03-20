@@ -33,7 +33,7 @@ const SignUp = () => {
 
   useEffect(() => {
     fetch(
-      "https://automatadev-001-site15.atempurl.com/api/v1/locations/countries",
+      "http://automatadev-001-site16.atempurl.com/api/v1/locations/countries",
     )
       .then((res) => res.json())
       .then((data) => setCountries(data.data.countries));
@@ -42,7 +42,7 @@ const SignUp = () => {
   const handleCountryChange = (countryName) => {
     setFormData({ ...formData, country: countryName });
     fetch(
-      `https://automatadev-001-site15.atempurl.com/api/v1/locations/countries/by-name/${countryName}/states`,
+      `http://automatadev-001-site16.atempurl.com/api/v1/locations/countries/by-name/${countryName}/states`,
     )
       .then((res) => res.json())
       .then((data) => setStates(data.data.states));
@@ -51,7 +51,7 @@ const SignUp = () => {
   const handleStateChange = (stateId, stateName) => {
     setFormData({ ...formData, state: stateName });
     fetch(
-      `https://automatadev-001-site15.atempurl.com/api/v1/locations/states/${stateId}/cities`,
+      `http://automatadev-001-site16.atempurl.com/api/v1/locations/states/${stateId}/cities`,
     )
       .then((res) => res.json())
       .then((data) => setCities(data.data.cities));
@@ -64,7 +64,7 @@ const SignUp = () => {
     }
     setLoading(true);
     const response = await fetch(
-      "https://automatadev-001-site15.atempurl.com/api/v1/authentication/register",
+      "http://automatadev-001-site16.atempurl.com/api/v1/authentication/register",
       {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -76,15 +76,16 @@ const SignUp = () => {
       setLoading(false);
       console.log("Sign Up Result", result);
       dispatch(updateUser(result.data));
-      localStorage.setItem("authToken", result.data.token.accessToken);
+      // localStorage.setItem("authToken", result.data.token.accessToken);
       toast.success(result.message);
       navigate("/verifyOtp");
+    } else if (result.message === "User already exists") {
+      setLoading(false);
+      toast.error(result.message);
+      navigate("/signIn");
     } else {
       setLoading(false);
       toast.error(result.message);
-      if (result.message === "User already exists") {
-        navigate("/signIn");
-      }
     }
   };
 
